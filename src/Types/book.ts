@@ -4,7 +4,6 @@ export type BookListItem = {
   imageUrl: string;
   year?: string;
   authors?: string[];
-  rating?: number;
   loggedAt?: string;
 };
 

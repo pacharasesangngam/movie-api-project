@@ -8,7 +8,7 @@ import type {
 
 const API_URL = 'https://openlibrary.org/people/mekBot/books/want-to-read.json';
 const PLACEHOLDER_IMAGE =
-  'https://via.placeholder.com/500x750.png?text=No+Image';
+  'https://via.placeholder.com/500x750.png?text=No+Cover';
 
 const extractAuthors = (entry: OpenLibraryEntry): string[] => {
   const work = entry.work;

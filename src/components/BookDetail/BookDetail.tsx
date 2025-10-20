@@ -35,6 +35,9 @@ const BookDetail = () => {
   const errorMessage = useAppSelector(
     (state) => (bookId ? state.bookDetail.errorById[bookId] : null),
   );
+  const bookFromList = useAppSelector((state) =>
+    bookId ? state.books.items.find((item) => item.id === bookId) : undefined,
+  );
   const isInCollection = useAppSelector((state) =>
     bookId ? Boolean(state.collection.items[bookId]) : false,
   );
@@ -130,17 +133,26 @@ const BookDetail = () => {
     );
   }
 
+  const PLACEHOLDER_PREFIX = 'https://via.placeholder.com';
+  const imageUrl =
+    bookDetail.imageUrl.startsWith(PLACEHOLDER_PREFIX) &&
+    bookFromList?.imageUrl
+      ? bookFromList.imageUrl
+      : bookDetail.imageUrl;
+
   const bookListItem: BookListItem = {
     id: bookDetail.id,
     title: bookDetail.title,
-    imageUrl: bookDetail.imageUrl,
+    imageUrl,
     year: bookDetail.firstPublishYear
       ? bookDetail.firstPublishYear.toString()
       : undefined,
-    authors: [],
-    loggedAt: bookDetail.firstPublishYear
-      ? bookDetail.firstPublishYear.toString()
-      : new Date().getFullYear().toString(),
+    authors: bookFromList?.authors ?? [],
+    loggedAt:
+      bookFromList?.loggedAt ??
+      (bookDetail.firstPublishYear
+        ? bookDetail.firstPublishYear.toString()
+        : new Date().getFullYear().toString()),
     rating: undefined,
   };
 
@@ -153,7 +165,7 @@ const BookDetail = () => {
       }`}
     >
       <img
-        src={bookDetail.imageUrl}
+        src={imageUrl}
         alt={bookDetail.title}
         className="mx-auto w-full max-w-xs rounded-lg object-cover shadow-md md:mx-0"
       />
